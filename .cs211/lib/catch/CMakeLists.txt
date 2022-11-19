@@ -10,7 +10,7 @@ project(Catch2
 
 add_library(catch
         include/catch.hxx
-        src/catch.cxx)
+        src/catch.cxx ../../../src/doodler.hxx ../../../src/doodler.cxx)
 
 set_target_properties(catch PROPERTIES
         CXX_EXTENSIONS  Off
