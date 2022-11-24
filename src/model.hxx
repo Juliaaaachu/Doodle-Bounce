@@ -4,15 +4,15 @@
 #include <doodler.hxx>
 #include <vector>
 
+using Dimensions = ge211::Dims<int>;
+using Position = ge211::Posn<int>;
+using Rectangle = ge211::Rect<int>;
+using List = std::vector<Rectangle>;
+
 class Model
 {
 
 public:
-
-    using Dimensions = ge211::Dims<int>;
-    using Position = ge211::Posn<int>;
-    using Rectangle = ge211::Rect<int>;
-    using List = std::vector<Rectangle>;
 
     //returns whether game is finished.
     //True when doodle dies, False if
@@ -48,17 +48,16 @@ private:
 
     void set_game_over();
 
-
     //updates state of game for one frame
     //always update position of doodle
-
-    //Case: When doodle jump on a new block
+    //Case: When doodle jump on a new block  (moves block down)
     //      the whole screen (aka every blocks on screen) moves down
     //      by the distance between the jumped-on-block and the bottom
-    //      (maybe remember to add offet a bit to keep block in view)
+    //      (maybe remember to add offset a bit to keep block in view)
     //      of the screen
     //      calls update_blocks to remove block off-screen & add new block
     void on_frame(double dt);
+
 
 
     int score_;
