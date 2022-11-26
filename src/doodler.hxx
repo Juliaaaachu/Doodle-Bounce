@@ -8,19 +8,22 @@
 #include <ge211.hxx>
 #include <model.hxx>
 
-using Position = ge211::Posn<int>;
-using Velocity = ge211::Dims<int>;
-using Rectangle = ge211::Rect<int>;
 
 class Doodler
 {
 public:
+    using Position = ge211::Posn<int>;
+    using Velocity = ge211::Dims<int>;
+    using Rectangle = ge211::Rect<int>;
+    using ListofRect = std::vector<Rectangle>;
+
+
     // return the state of the doodler after 'dt' seconds have passed
     // => should return new doodle with updated position
-    // 1. serves also as next(dt)  => update pos based on dt
+    // 1. serves also as onframe  => update pos based on dt
     // 2. receive keyboard signal (left right)
     // 3. check if it has jumped on any blocks  (jump forward)
-    void update();
+    void on_frame(double dt);
 
 
     //get the bottom y position of the doodle
@@ -30,22 +33,14 @@ public:
     }
 
     //check all blocks
-    //TODO: return null (if didn't jump on block) or return block (if jumped)
-    //
-    bool jump_blocks(std::vector<ge211::Rect<int>> blocks) {
-        for (auto block : blocks) {
-            if (jump_block(block)) {
-                return true;
-            };
-        }
-        return false;
-    }
+    // return null (if didn't jump on block) or return block (if jumped)
+    Rectangle jump_blocks(ListofRect blocks);
 
     //determine if doodler jumps on a block
     //    => similar x-coord (block dim)
     //    => its bottom is the same as the block's top y
     //INPUT: need this->actual_blocks
-    bool jump_block(ge211::Rect<int> block) ;
+    bool jump_block(Rectangle block) ;
 
     //check if doodle is dead
     //by comparing doodle_bottom to board dimension
@@ -88,7 +83,9 @@ private:
     //stores which position you're on doodle_sprites
     int index = 0;
 
+    friend class Model;
 };
 
 
 #endif //GAME_DOODLER_HXX
+

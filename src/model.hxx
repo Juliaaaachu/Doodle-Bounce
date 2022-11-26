@@ -7,12 +7,15 @@
 using Dimensions = ge211::Dims<int>;
 using Position = ge211::Posn<int>;
 using Rectangle = ge211::Rect<int>;
-using List = std::vector<Rectangle>;
+using ListofRect = std::vector<Rectangle>;
 
 class Model
 {
-
 public:
+    //constructor
+    Model();
+
+    //remember deconstuructor ~Model() if in C; => freeze unnecessary memory
 
     //returns whether game is finished.
     //True when doodle dies, False if
@@ -31,20 +34,21 @@ public:
 private:
 
     //the doodler object
-    Doodler Doodler;
+    Doodler doodler;
 
     //Makes doodle jump at initialization
     void launch();
 
     //this is a list of all blocks on screen
     //which doodle can jump on
-    List actual_blocks;
+    ListofRect actual_blocks;
 
-    List fragile_blocks;
+    ListofRect fragile_blocks;
 
     //move doodle left or right depending on key input
-    void moves_doodle_to(int x);
-
+    //called in Controller
+    void moves_doodle_left();
+    void moves_doodle_right();
 
     void set_game_over();
 

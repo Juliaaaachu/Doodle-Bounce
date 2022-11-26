@@ -9,6 +9,7 @@ class View
 public:
     explicit View(Model const& model);
 
+    //add sprite
     void draw(ge211::Sprite_set& set);
 
 private:

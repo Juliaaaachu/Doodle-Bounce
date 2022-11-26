@@ -3,13 +3,15 @@
 //
 
 #include "doodler.hxx"
-#include "../.cs211/lib/ge211/include/ge211_geometry.hxx"
-
-// using Position = ge211::Posn<int>;
-// using Rectangle = ge211::Rect<int>;
+#include "model.hxx"
 
 bool
-Doodler::jump_block(ge211::Rect<int> block) {
+Doodler::doodle_dead() const {
+    return (this->position_.y >= 600);
+}
+
+bool
+Doodler::jump_block(Rectangle block) {
     int doodle_y = this->doodle_bottom_y();
 
     //x is a range
@@ -35,3 +37,27 @@ Doodler::jump_block(ge211::Rect<int> block) {
     return false;
 }
 
+
+Rectangle
+Doodler::jump_blocks(ListofRect blocks)
+{
+    for (auto curblock : blocks) {
+        if (jump_block(curblock)) {
+            return curblock;
+        };
+    }
+    return nullptr;
+}
+
+//update doodler position
+void
+Doodler::on_frame(double dt)
+{
+    // ge211::Dims<int> dy = this->velocity_.y;
+    int dy = 0;
+
+    //for every frame, we change y by 0.2 pixels (always falling down)
+    dy += 0.2;
+    this->position_.y += dy;
+
+}
