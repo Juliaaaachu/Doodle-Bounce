@@ -2,20 +2,36 @@
 
 #include "model.hxx"
 
-using ImageSprite = ge211::Image_sprite;
 
 class View
 {
 public:
-    explicit View(Model const& model);
 
-    //add sprite
-    void draw(ge211::Sprite_set& set);
+    using ImageSprite = ge211::Image_sprite;
+    using Dimensions = ge211::Dims<int>;
+    using Sprite_set = ge211::Sprite_set;
+
+    explicit View(Model& model);
+
+    // draw func takes in sprite set
+    void draw(Sprite_set& set);
+
+    // creating the window for the game
+    Dimensions initial_window_dimensions() const;
 
 private:
-    Model const& model_;
+    // view can access but not edit model
+    Model& model_;
 
-    ImageSprite doodler_;
-    ImageSprite block;
+    // creating sprites for the game
+    ImageSprite doodler_right_ {"doodle_right"};
+    ImageSprite doodler_left_ {"doodle_left"};
+    ImageSprite actual_block_ {"actual_block"};
+    ImageSprite frag_block_ {"frag_block"};
+
+    // used to scale the imported images correctly
+    double doodler_scale_ = 1.0;
+    double block_scale_ = 1.0;
+
 
 };

@@ -27,7 +27,7 @@ Model::on_frame(double dt) {
     if (this->doodler.doodle_dead()) return;
 
     //if jumpblocks return a block (posn)
-    Rectangle anchorblock = this->doodler.jump_blocks(this->actual_blocks);
+    Rectangle anchorblock = this->doodler.jump_blocks(this->actual_blocks_);
     if (anchorblock) {
 
         //if we hit a block, bounce backup
@@ -43,7 +43,7 @@ Model::on_frame(double dt) {
         //increase y posn for all block in list  (moving them down on screen)
         for (int i = 0; i < 10; i++) {
 
-            Rectangle block = this->actual_blocks[i];
+            Rectangle block = this->actual_blocks_[i];
             block.top_left().down_by(dist2anchor);
 
             //if block is out of screen (within a threshold)
@@ -55,7 +55,7 @@ Model::on_frame(double dt) {
                                                 30,
                                                 10);
 
-                this->actual_blocks[i] = new_block;
+                this->actual_blocks_[i] = new_block;
             }
         }
 
@@ -63,11 +63,29 @@ Model::on_frame(double dt) {
 
 }
 
+ListofRect
+Model::actual_blocks(){
+    return actual_blocks_;
+}
+
+ListofRect
+Model::fragile_blocks(){
+    return fragile_blocks_;
+}
+
+// launching doodler at game start (going up, neg height velocity)
+void
+Model::launch() {
+    this->doodler.velocity_.height = -10;
+}
+
+// moving the doodler left, signify its facing left now
 void
 Model::moves_doodle_left() {
     this->doodler.position_.left_by(5);
 }
 
+// moving the doodler right, signify its facing right now
 void
 Model::moves_doodle_right() {
     this->doodler.position_.right_by(5);
