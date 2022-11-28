@@ -1,13 +1,5 @@
-//
-// Created by Julia Chu on 11/19/22.
-//
-//avoid duplicated import
-#ifndef GAME_DOODLER_HXX
-#define GAME_DOODLER_HXX
-
-#include <ge211.hxx>
-#include <model.hxx>
-
+#pragma once
+#include "model.hxx"
 
 class Doodler
 {
@@ -17,6 +9,8 @@ public:
     using Rectangle = ge211::Rect<int>;
     using ListofRect = std::vector<Rectangle>;
 
+    //Constructor
+    Doodler();
 
     // return the state of the doodler after 'dt' seconds have passed
     // => should return new doodle with updated position
@@ -84,7 +78,3 @@ private:
 
     friend class Model;
 };
-
-
-#endif //GAME_DOODLER_HXX
-

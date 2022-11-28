@@ -31,9 +31,9 @@ Model::on_frame(double dt) {
     if (anchorblock) {
 
         //if we hit a block, bounce backup
-        this->doodler.velocity_.y = -10;
+        this->doodler.velocity_.height = -10;
 
-        int anchor_y = anchorblock.y;
+        int anchor_y = anchorblock.height;
 
         //assume screen dim height = 600
         //assume we always want jumped block to be 100 pix above screen bottom

@@ -4,6 +4,10 @@
 #include "doodler.hxx"
 #include "model.hxx"
 
+Doodler::Doodler() {
+
+}
+
 bool
 Doodler::doodle_dead() const {
     return (this->position_.y >= 600);
