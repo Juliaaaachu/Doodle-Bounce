@@ -5,27 +5,30 @@
 
 #include <ge211.hxx>
 
-using Dimension = ge211::Dims<int>;
+using Key = ge211::events::Key;
+using Position = ge211::Posn<int>;
+
 class Controller : public ge211::Abstract_game
 {
 public:
+
     Controller();
 
-protected:
-    Dimension initial_window_dimensions() const override;
 
+protected:
+
+    // creating the initial window for the game
+    ge211::Dims<int> initial_window_dimensions() const override;
+
+    void on_frame(double dt) override;
+
+    // drawing the screen to update by frame
     void draw(ge211::Sprite_set& set) override;
 
-    //on left & right, moves doodle horizontal position
-    void on_key_left (ge211::Key);
-
-    void on_key_right (ge211::Key);
-
-    //on ' '(space) starts game
-    void on_key_space(ge211:Key);
+    // creating on key functions, passing in left, right, and space
+    void on_key(ge211::events::Key key) override;
 
 private:
     Model model_;
     View view_;
-    Dimension screen_dimensions_;
 };

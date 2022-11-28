@@ -76,7 +76,6 @@ private:
     ge211::Dims<int> dims_;
     Velocity velocity_;
 
-
     //ge211::Image_sprite doodle_sprite;
     std::vector<ge211::Image_sprite> doodle_sprites;
 

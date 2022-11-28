@@ -30,27 +30,12 @@ public:
     //score => += distance between new block you jumped & screen
     void update_score();
 
-
-private:
-
-    //the doodler object
-    Doodler doodler;
-
     //Makes doodle jump at initialization
     void launch();
-
-    //this is a list of all blocks on screen
-    //which doodle can jump on
-    ListofRect actual_blocks;
-
-    ListofRect fragile_blocks;
-
     //move doodle left or right depending on key input
     //called in Controller
     void moves_doodle_left();
     void moves_doodle_right();
-
-    void set_game_over();
 
     //updates state of game for one frame
     //always update position of doodle
@@ -62,7 +47,20 @@ private:
     //      calls update_blocks to remove block off-screen & add new block
     void on_frame(double dt);
 
+    ListofRect actual_blocks();
+    ListofRect fragile_blocks();
 
+
+private:
+
+    //the doodler object
+    Doodler doodler;
+    //this is a list of all blocks on screen
+    //which doodle can jump on
+    ListofRect actual_blocks_;
+    ListofRect fragile_blocks_;
+
+    void set_game_over();
 
     int score_;
 
