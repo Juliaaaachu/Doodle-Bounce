@@ -23,6 +23,12 @@ Controller::initial_window_dimensions() const
     return view_.initial_window_dimensions();
 }
 
+std::string
+Controller::initial_window_title() const
+{
+    return view_.initial_window_title();
+}
+
 void
 Controller::on_key(Key key)
 {
@@ -30,13 +36,16 @@ Controller::on_key(Key key)
         // move doodler left
         model_.moves_doodle_left();
     }
-    else if (key == Key::right()){
+    if (key == Key::right()){
         // move doodler right
         model_.moves_doodle_right();
     }
-    else if (key == Key::code(' ')){
+    if (key == Key::code(' ')){
         // launch doodler
         model_.launch();
+    }
+    if (key == ge211::Key::code('q')) {
+        quit();
     }
 }
 

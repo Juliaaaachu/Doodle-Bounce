@@ -20,6 +20,9 @@ protected:
     // creating the initial window for the game
     ge211::Dims<int> initial_window_dimensions() const override;
 
+    // creating window title
+    std::string initial_window_title() const override;
+
     void on_frame(double dt) override;
 
     // drawing the screen to update by frame

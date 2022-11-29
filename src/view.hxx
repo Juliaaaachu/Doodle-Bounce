@@ -19,16 +19,22 @@ public:
     // creating the window for the game
     Dimensions initial_window_dimensions() const;
 
+    // creating window title
+    std::string initial_window_title() const;
+
 private:
     // view can access but not edit model
     Model& model_;
 
     // creating sprites for the game
+    ge211::sprites::Rectangle_sprite block_;
+    ge211::sprites::Rectangle_sprite test_;
     ImageSprite doodler_right_ {"doodler_right.png"};
     ImageSprite doodler_left_ {"doodler_left.png"};
     ImageSprite actual_block_ {"actual_block.png"};
     ImageSprite frag_block_ {"frag_block.png"};
     ImageSprite bg_ {"bg.png"};
+
 
     // used to scale the imported images correctly
     ge211::Transform sprite_scale = ge211::Transform{}.set_scale(0.1);

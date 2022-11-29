@@ -18,7 +18,7 @@ Model::Model()
 
         Rectangle block = Rectangle (brick_pos.x,
                                      brick_pos.y,
-                                     30,
+                                     60,
                                      10);
 
         this->actual_blocks_.push_back(block);
@@ -32,7 +32,7 @@ Model::Model()
 
         Rectangle block = Rectangle (brick_pos.x,
                                      brick_pos.y,
-                                     30,
+                                     60,
                                      10);
 
         this->fragile_blocks_.push_back(block);
@@ -80,7 +80,7 @@ Model::on_frame(double dt) {
             if (block.top_left().y > 550) {
                 Rectangle new_block = Rectangle(rand() % 300,
                                                 rand() % dist2anchor,
-                                                30,
+                                                60,
                                                 10);
 
                 this->actual_blocks_[i] = new_block;

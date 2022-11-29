@@ -79,12 +79,16 @@ public:
         return t_l;
     }
 
+    ge211::Dims<int> get_dims_(){
+        return this->dims_;
+    }
+
 private:
     //current position
 
     //center
     Position position_;
-    ge211::Dims<int> dims_;
+    ge211::Dims<int> dims_ = {60, 60};
     Velocity velocity_;
     float dy = 0;
 
