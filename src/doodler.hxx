@@ -88,7 +88,7 @@ private:
 
     //center
     Position position_;
-    ge211::Dims<int> dims_ = {64, 63};
+    ge211::Dims<int> dims_ {64, 63};
     Velocity velocity_;
     float dy = 0;
 

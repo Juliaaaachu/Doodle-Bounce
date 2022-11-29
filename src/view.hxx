@@ -30,6 +30,11 @@ private:
     ge211::sprites::Rectangle_sprite block_;
     ge211::sprites::Rectangle_sprite test_;
     ge211::sprites::Rectangle_sprite blah_;
+
+
+    ge211::Font sans30_{"sans.ttf", 30};
+    ge211::Text_sprite score_sprite_;
+
     ImageSprite doodler_right_ {"doodler_right.png"};
     ImageSprite doodler_left_ {"doodler_left.png"};
     ImageSprite actual_block_ {"actual_block.png"};

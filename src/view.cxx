@@ -1,5 +1,6 @@
 #include "view.hxx"
 #include "iostream"
+#include <cstring>
 
 
 
@@ -8,13 +9,20 @@ View::View(Model& model)
         : model_(model),
         block_ ({5,10}, ge211::Color::black()),
         test_ ({5,30}, ge211::Color::white()),
-        blah_({60,5}, ge211::Color::medium_yellow())
+        blah_({60,5}, ge211::Color::medium_yellow()),
+        score_sprite_(std::to_string(model_.get_score()), sans30_)
 {}
 
 // drawing the scene for each frame update
 void
 View::draw(Sprite_set& set)
 {
+    //prints out score on the top left screen, keep track of updated value
+    ge211::Text_sprite::Builder score_builder(sans30_);
+    score_builder.color(ge211::Color::black()) << model_.get_score();
+    score_sprite_.reconfigure(score_builder);
+    set.add_sprite(score_sprite_, {20, 20});
+
     // set.add_sprite(test_, {, 100}, 2);
     // std::cout<<model_.actual_blocks().size()<<std::endl;
     // drawing all the regular blocks by iterating through

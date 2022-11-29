@@ -54,6 +54,10 @@ public:
         return this->doodler;
     }
 
+    int get_score() {
+        return this->score_;
+    }
+
 private:
 
     //the doodler object
@@ -65,6 +69,6 @@ private:
 
     void set_game_over();
 
-    int score_;
+    int score_=0;
 
 };

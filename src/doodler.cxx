@@ -63,10 +63,8 @@ Doodler::on_frame(double dt)
 {
     // ge211::Dims<int> dy = this->velocity_.y;
     //for every frame, we change y by 0.2 pixels (always falling down)
-    std::cout<<"doodler pos y before: " << position_.y << std::endl;
     this->dy += 0.1;
     this->position_.y += this->dy;
-    std::cout<<"doodler pos y after: " << position_.y << std::endl;
 
 
 }

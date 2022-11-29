@@ -48,10 +48,12 @@ Model::on_frame(double dt) {
     //if doodler is dead, dont update anything
     if (this->doodler.doodle_dead()) return;
 
-    std::cout<< "doodler aint dead yet" << std::endl;
 
     //call doodler onframe to let doodler move
     this->doodler.on_frame(1);
+
+    //score updates as doodler lives longer
+    this->score_ += 1;
 
     //if jumpblocks return a block (posn)
     Rectangle anchorblock = this->doodler.jump_blocks(this->actual_blocks_);
