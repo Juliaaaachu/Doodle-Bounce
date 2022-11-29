@@ -28,9 +28,10 @@ private:
     ImageSprite doodler_left_ {"doodler_left.png"};
     ImageSprite actual_block_ {"actual_block.png"};
     ImageSprite frag_block_ {"frag_block.png"};
+    ImageSprite bg_ {"bg.png"};
 
     // used to scale the imported images correctly
-    ge211::Transform doodler_scale = ge211::Transform{}.set_scale(0.3);
-    ge211::Transform block_scale = ge211::Transform{}.set_scale(0.3);
+    ge211::Transform sprite_scale = ge211::Transform{}.set_scale(0.1);
+    ge211::Transform bg_scale = ge211::Transform{}.set_scale(0.2);
 
 };

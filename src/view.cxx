@@ -18,20 +18,20 @@ View::draw(Sprite_set& set)
     for (auto block: model_.get_actual_blocks()) {
         // std::cout<<block.x << "," << block.y<< std::endl;
 
-        set.add_sprite(actual_block_, {block.x, block.y}, 0, block_scale);
+        set.add_sprite(actual_block_, {block.x, block.y}, 1, sprite_scale);
     }
 
     // drawing all the fragile blocks by iterating through
     for (auto block: model_.get_fragile_blocks()) {
-        set.add_sprite(frag_block_, {block.x, block.y}, 0, block_scale);;
+        set.add_sprite(frag_block_, {block.x, block.y}, 1, sprite_scale);;
     }
 
     // drawing the doodler (yikes i need to figure this out)
     Position dood_pos = model_.get_dooler().get_topleft_pos();
     //
-    set.add_sprite(doodler_left_, {int(dood_pos.x), int(dood_pos.y)}, 0,
-                   doodler_scale);
-
+    set.add_sprite(doodler_left_, {int(dood_pos.x), int(dood_pos.y)}, 1,
+                   sprite_scale);
+    set.add_sprite(bg_, {0, 0}, 0, bg_scale);
     // set.add_sprite(doodler_right_, {100, 200}, 0, doodler_scale);
 }
 
