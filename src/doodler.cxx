@@ -4,7 +4,7 @@
 #include "doodler.hxx"
 #include "model.hxx"
 
-Doodler::Doodler() {
+Doodler::Doodler(): position_(Position(0,0)) {
 
 }
 
@@ -41,7 +41,7 @@ Doodler::jump_block(Rectangle block) {
 }
 
 
-Rectangle
+Doodler::Rectangle
 Doodler::jump_blocks(ListofRect blocks)
 {
     for (auto curblock : blocks) {
@@ -49,7 +49,7 @@ Doodler::jump_blocks(ListofRect blocks)
             return curblock;
         };
     }
-    return nullptr;
+    return Rectangle(-1, -1, -1, -1);
 }
 
 //update doodler position

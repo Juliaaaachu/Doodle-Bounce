@@ -1,5 +1,11 @@
 #pragma once
-#include "model.hxx"
+
+#include <ge211.hxx>
+#include <vector>
+
+//Forward Declaration
+class Model;
+
 
 class Doodler
 {
@@ -74,7 +80,7 @@ private:
     std::vector<ge211::Image_sprite> doodle_sprites;
 
     //stores which position you're on doodle_sprites
-    int index = 0;
+    long long unsigned  int index = 0;
 
     friend class Model;
 };

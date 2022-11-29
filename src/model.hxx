@@ -1,8 +1,8 @@
 #pragma once
 
 #include <ge211.hxx>
-#include <doodler.hxx>
 #include <vector>
+#include <doodler.hxx>
 
 using Dimensions = ge211::Dims<int>;
 using Position = ge211::Posn<int>;

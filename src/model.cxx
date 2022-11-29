@@ -15,7 +15,7 @@ Model::Model()
                                      30,
                                      10);
 
-        this->actual_blocks.push_back(block);
+        this->actual_blocks().push_back(block);
     }
 
 }
@@ -28,7 +28,7 @@ Model::on_frame(double dt) {
 
     //if jumpblocks return a block (posn)
     Rectangle anchorblock = this->doodler.jump_blocks(this->actual_blocks_);
-    if (anchorblock) {
+    if (anchorblock.height != -1) {
 
         //if we hit a block, bounce backup
         this->doodler.velocity_.height = -10;
