@@ -29,7 +29,7 @@ public:
     //get the bottom y position of the doodle
     //aka the feet => where we use it to detect jump block or dead
     int doodle_bottom_y() {
-        return this->position_.y - (this->dims_.height / 2);
+        return this->position_.y + (this->dims_.height / 2);
     }
 
     //check all blocks
@@ -88,7 +88,7 @@ private:
 
     //center
     Position position_;
-    ge211::Dims<int> dims_ = {60, 60};
+    ge211::Dims<int> dims_ = {64, 63};
     Velocity velocity_;
     float dy = 0;
 
