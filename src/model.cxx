@@ -91,8 +91,15 @@ Model::on_frame(double dt) {
         // }
 
     }
-
+    //fragile block disappear once being hit 
+    Rectangle fragilehit = this->doodler.jump_blocks(this->fragile_blocks_);
+    if (fragilehit.height != -1) {
+        fragilehit = this->fragile_blocks_.back();
+        this->fragile_blocks_.pop_back();
+    }
 }
+
+
 
 ListofRect
 Model::get_actual_blocks()
