@@ -20,8 +20,8 @@ Doodler::jump_block(Rectangle block) {
         int doodle_y = this->doodle_bottom_y();
 
         //x is a range
-        int doodle_x_min = this->position_.x - this->dims_.width / 2;
-        int doodle_x_max = this->position_.x + this->dims_.width / 2;
+        int doodle_x_min = this->position_.x - this->dims_.width / 2 + 15;
+        int doodle_x_max = this->position_.x + this->dims_.width / 2 - 5;
 
         // we assumed it's top-left
         auto block_pos = block.top_left();
