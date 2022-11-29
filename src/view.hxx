@@ -24,14 +24,13 @@ private:
     Model& model_;
 
     // creating sprites for the game
-    ImageSprite doodler_right_ {"doodle_right"};
-    ImageSprite doodler_left_ {"doodle_left"};
-    ImageSprite actual_block_ {"actual_block"};
-    ImageSprite frag_block_ {"frag_block"};
+    ImageSprite doodler_right_ {"doodler_right.png"};
+    ImageSprite doodler_left_ {"doodler_left.png"};
+    ImageSprite actual_block_ {"actual_block.png"};
+    ImageSprite frag_block_ {"frag_block.png"};
 
     // used to scale the imported images correctly
-    double doodler_scale_ = 1.0;
-    double block_scale_ = 1.0;
-
+    ge211::Transform doodler_scale = ge211::Transform{}.set_scale(0.3);
+    ge211::Transform block_scale = ge211::Transform{}.set_scale(0.3);
 
 };

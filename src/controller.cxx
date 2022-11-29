@@ -38,5 +38,22 @@ Controller::on_key(Key key)
         // launch doodler
         model_.launch();
     }
+}
+
+void
+Controller::on_key_down(ge211::events::Key key)
+{
+    if (key == Key::left()){
+        // move doodler left
+        model_.moves_doodle_left();
+    }
+    else if (key == Key::right()){
+        // move doodler right
+        model_.moves_doodle_right();
+    }
+    else if (key == Key::code(' ')){
+        // launch doodler
+        model_.launch();
+    }
 
 }

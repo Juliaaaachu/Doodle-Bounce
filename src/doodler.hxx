@@ -10,7 +10,7 @@ class Model;
 class Doodler
 {
 public:
-    using Position = ge211::Posn<int>;
+    using Position = ge211::Posn<float>;
     using Velocity = ge211::Dims<int>;
     using Rectangle = ge211::Rect<int>;
     using ListofRect = std::vector<Rectangle>;
@@ -68,6 +68,17 @@ public:
         }
     }
 
+    Position get_position() {
+        return this->position_;
+    }
+
+    Position get_topleft_pos () {
+        Position pos = this->position_;
+        Position t_l = Position(pos.x - dims_.width / 2,
+                                pos.y - dims_.height/2);
+        return t_l;
+    }
+
 private:
     //current position
 
@@ -75,6 +86,7 @@ private:
     Position position_;
     ge211::Dims<int> dims_;
     Velocity velocity_;
+    float dy = 0;
 
     //ge211::Image_sprite doodle_sprite;
     std::vector<ge211::Image_sprite> doodle_sprites;

@@ -3,6 +3,7 @@
 //
 #include "doodler.hxx"
 #include "model.hxx"
+#include "iostream"
 
 Doodler::Doodler(): position_(Position(0,0)) {
 
@@ -21,6 +22,7 @@ Doodler::jump_block(Rectangle block) {
     int doodle_x_min = this->position_.x - this->dims_.width / 2;
     int doodle_x_max = this->position_.x + this->dims_.width / 2;
 
+    // we assumed it's top-left
     auto block_pos = block.top_left();
     int block_x_min = block_pos.x;
     int block_x_max = block_pos.x + block.width;
@@ -30,8 +32,8 @@ Doodler::jump_block(Rectangle block) {
     //check if doodle & block overlap
 
     if (block_y_min < doodle_y && doodle_y < block_y_max) {
-        if (doodle_x_min < block_x_min && block_x_min < doodle_x_max ||
-            block_x_min < doodle_x_min &&  doodle_x_min < block_x_max) {
+        if ((doodle_x_min < block_x_min && block_x_min < doodle_x_max) ||
+            (block_x_min < doodle_x_min &&  doodle_x_min < block_x_max)) {
             return true;
         } else {
             return false;
@@ -57,10 +59,11 @@ void
 Doodler::on_frame(double dt)
 {
     // ge211::Dims<int> dy = this->velocity_.y;
-    int dy = 0;
-
     //for every frame, we change y by 0.2 pixels (always falling down)
-    dy += 0.2;
-    this->position_.y += dy;
+    std::cout<<"doodler pos y before: " << position_.y << std::endl;
+    this->dy += 0.1;
+    this->position_.y += this->dy;
+    std::cout<<"doodler pos y after: " << position_.y << std::endl;
+
 
 }

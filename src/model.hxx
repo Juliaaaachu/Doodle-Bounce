@@ -5,7 +5,7 @@
 #include <doodler.hxx>
 
 using Dimensions = ge211::Dims<int>;
-using Position = ge211::Posn<int>;
+using Position = ge211::Posn<float>;
 using Rectangle = ge211::Rect<int>;
 using ListofRect = std::vector<Rectangle>;
 
@@ -47,9 +47,12 @@ public:
     //      calls update_blocks to remove block off-screen & add new block
     void on_frame(double dt);
 
-    ListofRect actual_blocks();
-    ListofRect fragile_blocks();
+    ListofRect get_actual_blocks();
+    ListofRect get_fragile_blocks();
 
+    Doodler get_dooler() {
+        return this->doodler;
+    }
 
 private:
 
