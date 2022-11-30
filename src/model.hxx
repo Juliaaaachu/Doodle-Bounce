@@ -71,4 +71,8 @@ private:
 
     int score_=0;
 
+    int num_of_blocks = 10;
+
+    int num_of_fblocks = 4;
+
 };

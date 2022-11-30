@@ -5,7 +5,7 @@
 #include "model.hxx"
 #include "iostream"
 
-Doodler::Doodler(): position_(Position(0,0)) {
+Doodler::Doodler(): position_(Position(150,400)) {
 
 }
 
