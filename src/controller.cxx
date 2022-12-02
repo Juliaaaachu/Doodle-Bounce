@@ -30,8 +30,8 @@ Controller::initial_window_title() const
 }
 
 void
-Controller::on_key(Key key)
-{
+Controller::on_key(Key key){
+
     if (key == Key::left()){
         // move doodler left
         model_.moves_doodler_left();
@@ -48,4 +48,3 @@ Controller::on_key(Key key)
         quit();
     }
 }
-

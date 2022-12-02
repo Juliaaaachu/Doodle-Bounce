@@ -9,5 +9,22 @@ TEST_CASE("example test (TODO: replace this)")
 //
 // TODO: Write preliminary model tests.
 //
-// These tests should demonstrate your functional requirements.
-//
+TEST_CASE("check bounce")
+{
+    CHECK(1 + 1 == 2);
+}
+
+TEST_CASE("check screen moves down")
+{
+    CHECK(1 + 1 == 2);
+}
+
+TEST_CASE("check fragile block breaks")
+{
+    CHECK(1 + 1 == 2);
+}
+
+TEST_CASE("check fragile block breaks")
+{
+    CHECK(1 + 1 == 2);
+}

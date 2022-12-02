@@ -1,12 +1,9 @@
-//
-// Created by Julia Chu on 11/19/22.
-//
 #include "doodler.hxx"
 #include "model.hxx"
 
 // constructing the doodler
 Doodler::Doodler()
-        :position_ {135,500}
+        :position_ {135,505}
         {}
 
 // see if doodler hits screen bottom
@@ -55,7 +52,7 @@ Doodler::jumped_on_block(ListofRect blocks){
     return Rectangle(-1, -1, -1, -1);
 }
 
-//update doodler position
+// update doodler position
 void
 Doodler::on_frame(double dt)
 {

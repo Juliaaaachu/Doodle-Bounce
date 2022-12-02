@@ -1,6 +1,7 @@
 #include "model.hxx"
 #include <stdlib.h>
 #include<ctime>
+#include <iostream>
 
 // initializing the model
 Model::Model()
@@ -10,76 +11,55 @@ Model::Model()
 
     //Initialize 10 blocks on screen
     for (int i = 0; i < num_of_blocks; i++) {
-        // Rectangle new_block =  Rectangle(rand() % 200 + 50,
-        //                                  rand() % 500 + 50,
-        //                                  60,
-        //                                  10);
-        this->actual_blocks_.push_back(add_new_block());
+        this->actual_blocks_.push_back(add_new_block(i));
     }
     Rectangle initial_block = Rectangle(110,530,60,10);
     this->actual_blocks_.push_back(initial_block);
 
+    // initialize 4 fragile blocks on screen
     for (int i = 0 ; i < 4; i++) {
-        // Rectangle new_block =  Rectangle(rand() % 200 + 50,
-        //                                  rand() % 500 + 50,
-        //                                  60,
-        //                                  10);
-        this->fragile_blocks_.push_back(add_new_block());
+        this->fragile_blocks_.push_back(add_new_block(i));
     }
 
 }
 
+// function for initializing new blocks
 Rectangle
-Model::add_new_block()
-{
+Model::add_new_block(int multipler){
     // randomize a position within screen dimensions
-    Position block_pos = Position(rand() % 200 + 50,
-                                  rand() % 500 + 50);
-
-    while (!blocks_no_overlap(block_pos))
-    {
-        block_pos = Position(rand() % 200 + 50,
-                             rand() % 500 + 50);
+    Position block_pos = Position(rand() % 140 + 80,
+                                  530 - multipler * 60);
+    while (!blocks_no_overlap(block_pos)){
+        block_pos = Position(rand() % 140 + 80,
+                             530 - multipler*30);
     }
-    // if all conditions pass, return block
     return Rectangle(block_pos.x, block_pos.y,60, 10);
 }
 
+// making sure that initialized blocks dont overlap
 bool
 Model::blocks_no_overlap(Position new_block_pos)
 {
-    bool holder;
-
-    if (actual_blocks_.empty()){
+    // no current blocks, every pos is available
+    if (actual_blocks_.empty()) {
         return true;
     }
-
+    // iterate through all blocks => all blocks must pass to return true
     for (auto block: get_all_blocks()) {
-        // blocks shouldn't be within 30px to right or left of orig block
-        Position block_range_x = {block.x - 90, block.x + 90};
-        // blocks shouldn't be within 30px above or below of orig block
-        Position block_range_y_min = {block.y - 40, block.y + 40};
-        // blocks shouldn't be more than 100px above orig block
-        Position block_range_y_max = {block.y - 80, block.y + 80};
 
-        // checking through the ranges, first x, then y min and max
-        if (new_block_pos.x < block_range_x.x ||
-            new_block_pos.x > block_range_x.x) {
-            if (new_block_pos.y < block_range_y_min.x ||
-                new_block_pos.y > block_range_y_min.y){
-                if (new_block_pos.y < block_range_y_max.x ||
-                        new_block_pos.y > block_range_y_max.y){
-                    holder = true;
-                }
-                else {holder = false;}
-            }
-            else {holder = false;}
+        Position block_range_x = {block.x - 90, block.x + 90};
+        // if the new pos is within the x range, false
+        if (new_block_pos.x > block_range_x.x &&
+            new_block_pos.x < block_range_x.x) {
+            std::cout << " bad pos:" << new_block_pos << "\n";
+            return false;
         }
-        else{holder = false;}
     }
-    return holder;
+    return true;
+    std::cout << " good pos:" << new_block_pos << "\n";
 }
 
+// replacing the blocks when the screen re-renders
 void
 Model::replace_blocks()
 {
@@ -88,22 +68,23 @@ Model::replace_blocks()
         //if block is off-screen, re-render it on somewhere in screen
         // (instead of removing it in memory)
         if (this->actual_blocks_[i].top_left().y > 580) {
-            this->actual_blocks_[i] = Rectangle(rand() % 200,
-                                                -15,
+            this->actual_blocks_[i] = Rectangle(rand() % 140 + 80,
+                                                rand() % -15,
                                                 60,
                                                 10);
         }
     }
     for (int j = 0; j < num_of_fblocks; j++) {
         if (this->fragile_blocks_[j].top_left().y > 580) {
-            this->fragile_blocks_[j] = Rectangle(rand() % 200,
-                                                 -15,
+            this->fragile_blocks_[j] = Rectangle(rand() % 140 + 80,
+                                                 rand() % -15,
                                                  60,
                                                  10);
         }
     }
 }
 
+// move the blocks down when the doodler jumps on a new block
 void
 Model::move_blocks_down(){
     //moves blocks down as if doodler moves above center of screen
@@ -114,6 +95,7 @@ Model::move_blocks_down(){
             doodler.position_.y = 300;
             // moving the old block downwards
             this->actual_blocks_[i].y = this->actual_blocks_[i].y - doodler.dy;
+            score_ += this->actual_blocks_[i].y/500;
         }
         // iterating through fragile blocks
         for (int j = 0; j < num_of_fblocks; j++) {
@@ -124,6 +106,7 @@ Model::move_blocks_down(){
     replace_blocks();
 }
 
+// when the doodler hits both actual or fragile blocks, boost or delete frag.
 void
 Model::if_hit_block()
 {
@@ -151,17 +134,16 @@ Model::if_hit_block()
     }
 }
 
+// change the frame as time passes
 void
 Model::on_frame(double dt) {
 
     //if doodler is dead, don't update anything
     if (this->doodler.doodler_dead()) return;
 
-    if (doodler.live) {
+    if (doodler.live_) {
         //call doodler on frame to let doodler move
         this->doodler.on_frame(1);
-        //score updates as doodler lives longer
-        this->score_ += 1;
         // move the blocks down
         move_blocks_down();
         // checks if any blocks (actual or frag) are hit
@@ -169,33 +151,26 @@ Model::on_frame(double dt) {
     }
 }
 
-
 // moving the doodler left, signify its facing left now
 void
 Model::moves_doodler_left() {
-    this->doodler.position_ = this->doodler.position_.left_by(10);
-    doodler.face_left_ = true;
+    if (doodler.live_) {
+        this->doodler.position_ = this->doodler.position_.left_by(10);
+        doodler.face_left_ = true;
+    }
 }
 
 // moving the doodler right, signify its facing right now
 void
 Model::moves_doodler_right() {
-    this->doodler.position_ = this->doodler.position_.right_by(10);
-    doodler.face_left_ = false;
+    if (doodler.live_) {
+        this->doodler.position_ = this->doodler.position_.right_by(10);
+        doodler.face_left_ = false;
+    }
 }
 
 // launches the doodler by making it live
 void
 Model::launch_doodler(){
-    doodler.live = true;
-}
-
-
-ListofRect
-Model::get_all_blocks(){
-    ListofRect all_blocks = get_actual_blocks();
-    for (auto block : fragile_blocks_){
-        all_blocks.push_back(block);
-    }
-    return all_blocks;
+    doodler.live_ = true;
 }

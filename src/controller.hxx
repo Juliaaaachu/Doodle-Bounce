@@ -23,13 +23,14 @@ protected:
     // creating window title
     std::string initial_window_title() const override;
 
+    // calling model_.on_frame through controller
     void on_frame(double dt) override;
 
     // drawing the screen to update by frame
     void draw(ge211::Sprite_set& set) override;
 
     // creating on key functions, passing in left, right, and space
-    void on_key(ge211::events::Key key) override;
+    void on_key(Key key) override;
 
 private:
     Model model_;
