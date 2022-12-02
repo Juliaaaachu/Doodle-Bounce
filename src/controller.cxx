@@ -34,35 +34,18 @@ Controller::on_key(Key key)
 {
     if (key == Key::left()){
         // move doodler left
-        model_.moves_doodle_left();
+        model_.moves_doodler_left();
     }
     if (key == Key::right()){
         // move doodler right
-        model_.moves_doodle_right();
+        model_.moves_doodler_right();
     }
     if (key == Key::code(' ')){
         // launch doodler
-        model_.launch();
+        model_.launch_doodler();
     }
     if (key == ge211::Key::code('q')) {
         quit();
     }
 }
 
-void
-Controller::on_key_down(ge211::events::Key key)
-{
-    if (key == Key::left()){
-        // move doodler left
-        model_.moves_doodle_left();
-    }
-    else if (key == Key::right()){
-        // move doodler right
-        model_.moves_doodle_right();
-    }
-    else if (key == Key::code(' ')){
-        // launch doodler
-        model_.launch();
-    }
-
-}

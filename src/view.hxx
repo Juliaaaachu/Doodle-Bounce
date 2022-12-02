@@ -32,7 +32,7 @@ private:
     ge211::sprites::Rectangle_sprite blah_;
 
 
-    ge211::Font sans30_{"sans.ttf", 30};
+    ge211::Font sans30_{"font.ttf",25};
     ge211::Text_sprite score_sprite_;
 
     ImageSprite doodler_right_ {"doodler_right.png"};

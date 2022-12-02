@@ -21,10 +21,9 @@ View::draw(Sprite_set& set)
     ge211::Text_sprite::Builder score_builder(sans30_);
     score_builder.color(ge211::Color::black()) << model_.get_score();
     score_sprite_.reconfigure(score_builder);
-    set.add_sprite(score_sprite_, {20, 20});
+    set.add_sprite(score_sprite_, {20, 24});
 
     for (auto block: model_.get_actual_blocks()) {
-
         set.add_sprite(actual_block_, {block.x, block.y}, 1, sprite_scale);
     }
 
@@ -34,12 +33,17 @@ View::draw(Sprite_set& set)
     }
 
     // drawing the doodler
-    Position dood_pos = model_.get_dooler().get_topleft_pos();
+    Position dood_pos = model_.get_doodler().get_topleft_pos();
     //
-    set.add_sprite(doodler_left_, {int(dood_pos.x), int(dood_pos.y)}, 1,
-                   sprite_scale);
+    if (model_.get_doodler().get_face_left()) {
+        set.add_sprite(doodler_left_, {int(dood_pos.x), int(dood_pos.y)}, 3,
+                       sprite_scale);
+    }
+    else {
+        set.add_sprite(doodler_right_, {int(dood_pos.x), int(dood_pos.y)}, 3,
+                       sprite_scale);
+    }
     set.add_sprite(bg_, {0, 0}, 0, bg_scale);
-
      }
 
 // creating the initial window dimensions
