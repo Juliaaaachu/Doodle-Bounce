@@ -3,8 +3,7 @@
 
 // constructing the doodler
 Doodler::Doodler()
-        :position_ {135,505}
-        {}
+{}
 
 // see if doodler hits screen bottom
 bool
@@ -18,10 +17,6 @@ Doodler::is_jump_block(Rectangle block)
 {
     // if the doodler is moving down
     if (this->dy > 0) {
-        // setting up variables for doodler width dimensions + bottom
-        int doodle_x_min = this->position_.x - this->dims_.width / 2 + 15;
-        int doodle_x_max = this->position_.x + this->dims_.width / 2 - 15;
-        int doodle_y = this->doodle_bottom_y();
         // setting up variables for block height and width dimensions
         auto block_pos = block.top_left();
         int block_x_min = block_pos.x;
@@ -29,9 +24,9 @@ Doodler::is_jump_block(Rectangle block)
         int block_y_min = block_pos.y;
         int block_y_max = block_pos.y + block.height;
         //check if doodler & block overlap
-        if (block_y_min < doodle_y && doodle_y < block_y_max) {
-            if ((doodle_x_min < block_x_min && block_x_min < doodle_x_max) ||
-                (block_x_min < doodle_x_min && doodle_x_min < block_x_max)) {
+        if (block_y_min < get_y_botttom() && get_y_botttom() < block_y_max) {
+            if ((get_x_left() < block_x_min && block_x_min < get_x_right()) ||
+                (block_x_min < get_x_left() && get_x_left() < block_x_max)) {
                 return true;
             }
         }

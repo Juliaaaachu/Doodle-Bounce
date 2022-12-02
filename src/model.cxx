@@ -1,7 +1,6 @@
 #include "model.hxx"
 #include <stdlib.h>
 #include<ctime>
-#include <iostream>
 
 // initializing the model
 Model::Model()
@@ -10,53 +9,25 @@ Model::Model()
     srand(time(0));
 
     //Initialize 10 blocks on screen
-    for (int i = 0; i < num_of_blocks; i++) {
-        this->actual_blocks_.push_back(add_new_block(i));
+    for (int i = 0 ; i < num_of_blocks; i++) {
+        this->actual_blocks_.push_back(add_new_block(i, 60));
     }
     Rectangle initial_block = Rectangle(110,530,60,10);
     this->actual_blocks_.push_back(initial_block);
 
     // initialize 4 fragile blocks on screen
-    for (int i = 0 ; i < 4; i++) {
-        this->fragile_blocks_.push_back(add_new_block(i));
+    for (int j = 0 ; j < num_of_fblocks; j++) {
+        this->fragile_blocks_.push_back(add_new_block(j, 100));
     }
-
 }
 
 // function for initializing new blocks
 Rectangle
-Model::add_new_block(int multipler){
+Model::add_new_block(int multipler, int gap){
     // randomize a position within screen dimensions
-    Position block_pos = Position(rand() % 140 + 80,
-                                  530 - multipler * 60);
-    while (!blocks_no_overlap(block_pos)){
-        block_pos = Position(rand() % 140 + 80,
-                             530 - multipler*30);
-    }
+    Position block_pos = Position(rand() % 140 + 50,
+                                  500 - multipler * gap);
     return Rectangle(block_pos.x, block_pos.y,60, 10);
-}
-
-// making sure that initialized blocks dont overlap
-bool
-Model::blocks_no_overlap(Position new_block_pos)
-{
-    // no current blocks, every pos is available
-    if (actual_blocks_.empty()) {
-        return true;
-    }
-    // iterate through all blocks => all blocks must pass to return true
-    for (auto block: get_all_blocks()) {
-
-        Position block_range_x = {block.x - 90, block.x + 90};
-        // if the new pos is within the x range, false
-        if (new_block_pos.x > block_range_x.x &&
-            new_block_pos.x < block_range_x.x) {
-            std::cout << " bad pos:" << new_block_pos << "\n";
-            return false;
-        }
-    }
-    return true;
-    std::cout << " good pos:" << new_block_pos << "\n";
 }
 
 // replacing the blocks when the screen re-renders
@@ -68,16 +39,16 @@ Model::replace_blocks()
         //if block is off-screen, re-render it on somewhere in screen
         // (instead of removing it in memory)
         if (this->actual_blocks_[i].top_left().y > 580) {
-            this->actual_blocks_[i] = Rectangle(rand() % 140 + 80,
-                                                rand() % -15,
+            this->actual_blocks_[i] = Rectangle(rand() % 140 + 50,
+                                                -15,
                                                 60,
                                                 10);
         }
     }
     for (int j = 0; j < num_of_fblocks; j++) {
         if (this->fragile_blocks_[j].top_left().y > 580) {
-            this->fragile_blocks_[j] = Rectangle(rand() % 140 + 80,
-                                                 rand() % -15,
+            this->fragile_blocks_[j] = Rectangle(rand() % 140 + 50,
+                                                 -15,
                                                  60,
                                                  10);
         }
@@ -95,8 +66,8 @@ Model::move_blocks_down(){
             doodler.position_.y = 300;
             // moving the old block downwards
             this->actual_blocks_[i].y = this->actual_blocks_[i].y - doodler.dy;
-            score_ += this->actual_blocks_[i].y/500;
         }
+        score_ += (-doodler.dy);
         // iterating through fragile blocks
         for (int j = 0; j < num_of_fblocks; j++) {
             doodler.position_.y = 300;

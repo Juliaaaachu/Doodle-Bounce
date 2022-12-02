@@ -20,10 +20,6 @@ public:
     // moves the doodler downwards continuously
     void on_frame(double dt);
 
-    //get the bottom y position of the doodle
-    //aka the feet => where we use it to detect jump block or dead
-    int doodle_bottom_y() {return this->position_.y + (this->dims_.height / 2);}
-
     //check all blocks
     // return null (if didn't jump on block) or return block (if jumped)
     Rectangle jumped_on_block(ListofRect blocks);
@@ -40,20 +36,49 @@ public:
 
 
     // GETTER FUNCTIONS BELOW!
-    Position get_topleft_pos () {
+
+    // get the top left of the doodler -> used to draw the screen
+    Position get_topleft_pos() {
         Position pos = this->position_;
-        Position t_l = Position(pos.x - dims_.width / 2,
-                                pos.y - dims_.height/2);
-        return t_l;
+        doodler_top_left_ = Position(pos.x - dims_.width / 2,
+                                     pos.y - dims_.height/2);
+        return doodler_top_left_;
     }
 
-    bool get_face_left(){return face_left_;}
+    //get the bottom y position of the doodler (feet) for jump/dead detection
+    int get_y_botttom (){
+        doodler_y_bottom = this->position_.y + (this->dims_.height / 2);
+        return doodler_y_bottom;
+    }
+    // get the left side of the doodler (nose) for jump detection
+    int get_x_left() {
+        return this->position_.x - this->dims_.width / 2 + 15;
+    }
+    // get the right side of the doodler (butt) for jump detection
+    int get_x_right() {
+        return this->position_.x + this->dims_.width / 2 - 15;
+    }
 
-    bool get_live(){return live_;}
+    bool get_face_left() {return face_left_;}
+
+    bool get_live() {return live_;}
+
+    float get_dy() {return dy;}
+
+
+    // TESTER HELPERS
+    void set_doodler_position(Position p){
+        position_.x = p.x;
+        position_.y = p.y;
+    }
 
 private:
     //doodler's center
-    Position position_;
+    Position position_ {135,505};
+
+    Position doodler_top_left_ {0,0};
+
+    int doodler_y_bottom;
     // doodler dimensions
     ge211::Dims<int> dims_ {64, 63};
     // doodler velocity boost

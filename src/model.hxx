@@ -3,7 +3,6 @@
 #include <ge211.hxx>
 #include <vector>
 #include <doodler.hxx>
-#include <iostream>
 
 using Position = ge211::Posn<int>;
 using Rectangle = ge211::Rect<int>;
@@ -20,11 +19,7 @@ public:
     void on_frame(double dt);
 
     // initialize new blocks
-    Rectangle add_new_block(int multipler);
-
-    // make sure the blocks don't overlap
-    bool blocks_no_overlap(Position new_block_pos);
-
+    Rectangle add_new_block(int multipler, int gap);
 
     // RE-RENDERING THE SCREEN
     //blocks continually go down (for both actual and frag)
@@ -45,20 +40,10 @@ public:
 
     void launch_doodler();
 
-
     // GETTER FUNCTIONS BELOW!!
     ListofRect get_actual_blocks() {return this->actual_blocks_;}
 
     ListofRect get_fragile_blocks() {return this->fragile_blocks_;}
-
-    ListofRect get_all_blocks(){
-        ListofRect all_blocks;
-        for (auto block : actual_blocks_)
-        {all_blocks.push_back(block);}
-        for (auto block : fragile_blocks_)
-        {all_blocks.push_back(block);}
-        return all_blocks;
-    }
 
     Doodler get_doodler() {return this->doodler;}
 
