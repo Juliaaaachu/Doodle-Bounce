@@ -3,7 +3,8 @@
 #include<ctime>
 
 // initializing the model
-Model::Model()
+Model::Model(Position pos)
+        :doodler(pos)
 {
     // set seed to time(0)
     srand(time(0));

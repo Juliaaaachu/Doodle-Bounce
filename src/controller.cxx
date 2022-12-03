@@ -2,7 +2,7 @@
 #include "view.hxx"
 
 Controller::Controller()
-        : model_(),
+        : model_({135,505}),
           view_(model_)
 { }
 

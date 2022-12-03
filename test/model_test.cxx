@@ -1,227 +1,219 @@
 #include "model.hxx"
-#include "view.hxx"
 #include <catch.hxx>
 
-struct Test_access
-{
-    Model& model;
-
-    // Constructs a `Test_access` with a reference to the Model under test.
-    explicit Test_access(Model&);
-    void set_actual_block (Position p);
-    void set_fragile_block (Position p);
-    void set_doodler (Position p);
-    void clear_blocks(ListofRect blocks);
-};
+// struct Test_access
+// {
+//     Model& model;
+//
+//     // Constructs a `Test_access` with a reference to the Model under test.
+//     explicit Test_access(Model&);
+//     void set_actual_block (Position p);
+//     void set_fragile_block (Position p);
+//     void set_doodler (Position p);
+//     void clear_blocks(ListofRect blocks);
+// };
 
 //
 // test case checks if the doodler correctly keeps moving down until it bounces
 TEST_CASE("check bounce")
 {
-    // initialize and clear the existing blocks
-    Model model;
-    Test_access access(model);
-    access.clear_blocks(model.get_actual_blocks());
-    access.clear_blocks(model.get_fragile_blocks());
-    double dt = 1;
+    // initialize with doodler at y = 300 and clear the existing blocks
+    Model m1({100,300});
+    m1.clear_actual_blocks();
+    m1.clear_fragile_blocks();
 
-    // add a new block at desired pos and doodler slightly above
-    access.set_actual_block({100, 400});
-    access.set_doodler({100, 300});
-    // check the initialization works
-    CHECK(model.get_doodler().get_y_botttom() == 50);
+    // add a new block at desired pos
+    Rectangle test_block(100, 355, 60, 10);
+    m1.set_new_actual(test_block);
+
+    // check set up is correct
+    CHECK(m1.get_actual_blocks().size() == 1);
+    CHECK(m1.get_fragile_blocks().size() == 0);
+    CHECK(m1.get_actual_blocks()[0].y == 355);
+    CHECK(m1.get_doodler().get_position().y == 300);
+
+    int dt = 1;
 
     // launch the doodler to start the game
-    model.launch_doodler();
+    m1.launch_doodler();
 
     // calls 10 frames and check the doodler is moving down
-    for (int i = 0; i < 10; i++) {
-        model.on_frame(dt);
-        CHECK(model.get_doodler().get_y_botttom() == 50);
-        CHECK(model.get_doodler().get_dy() > 0);
+    for (int i = 0; i < 16; i++) {
+        m1.on_frame(dt);
+        CHECK(m1.get_doodler().get_dy() > 0);
     }
     // call another frame so the doodler hits the set block
-    // check the position of impact, check the doodler is moving up
-    model.on_frame(dt);
-    CHECK(model.get_doodler().get_y_botttom() == 50);
-    CHECK(model.get_doodler().get_dy() < 0);
+    // check the position of impact
+    m1.on_frame(dt);
+    CHECK(m1.get_doodler().get_y_botttom() >= m1.get_actual_blocks()[0].y);
 
-    // call 10 frame and check the doodler keeps moving up
-    for (int i = 0; i < 10; i++) {
-        model.on_frame(dt);
-        CHECK(model.get_doodler().get_y_botttom() == 50);
-        CHECK(model.get_doodler().get_dy() < 0);
+    // check after frames delay (negating the down velocity)
+    m1.on_frame(dt);
+    m1.on_frame(dt);
+    CHECK(m1.get_doodler().get_dy() <= 0);
+
+    // call 39 frames so the velocity is once again negated (-0.2 each time)
+    for (int i = 0; i < 39; i++) {
+        m1.on_frame(dt);
+        CHECK(m1.get_doodler().get_dy() <= 0);
     }
     // call another frame so the doodler's velocity is reversed
-    model.on_frame(dt);
-    CHECK(model.get_doodler().get_dy() > 0);
-
-}
-
-
-// checks to ensure the block sprites are moving down as the game progresses
-TEST_CASE("check blocks moves down")
-{
-    // initialize and clear the existing blocks
-    Model model;
-    Test_access access(model);
-    access.clear_blocks(model.get_actual_blocks());
-    access.clear_blocks(model.get_fragile_blocks());
-    double dt = 1;
-
-    // set blocks above the doodler
-    access.set_actual_block({100, 280});
-    access.set_actual_block({100, 250});
-
-    // add a new block at desired pos and doodler slightly above
-    access.set_actual_block({100, 400});
-    access.set_doodler({100, 300});
-
-    // launch the doodler to start the game
-    model.launch_doodler();
-
-    // calls 10 frames so the doodler hits the bottom block
-    for (int i = 0; i < 10; i++) {
-        model.on_frame(dt);
-    }
-
-    // check the first bottom block is re-rendered at top bc it went off-screen
-    CHECK(model.get_actual_blocks()[0].y == -15);
-
-    // check the two other blocks is re-rendered at a lower position
-    CHECK(model.get_actual_blocks()[1].y == 400 - model.get_doodler().get_dy());
-    CHECK(model.get_actual_blocks()[2].y == 400 - model.get_doodler().get_dy());
+    m1.on_frame(dt);
+    CHECK(m1.get_doodler().get_dy() > 0);
 
 }
 
 // check doodler dies when it hits the bottom of screen
 TEST_CASE("check doodler dies")
 {
-    // initialize and clear the existing blocks
-    Model model;
-    Test_access access(model);
-    access.clear_blocks(model.get_actual_blocks());
-    access.clear_blocks(model.get_fragile_blocks());
-    double dt = 1;
+    // initialize with doodler at y = 300 and clear the existing blocks
+    Model m3({100,550});
+    m3.clear_actual_blocks();
+    m3.clear_fragile_blocks();
 
-    // no new blocks initialized bc doodler has to free fall
-    // set doodler at a desired pos
-    access.set_doodler({100, 300});
+    int dt = 1;
+    m3.launch_doodler();
 
-    // launch the doodler to start the game
-    model.launch_doodler();
-
-    // calls 10 frames so the doodler hits bottom of the screen
-    for (int i = 0; i < 20; i++) {
-        model.on_frame(dt);
+    // calls 24 frames so the doodler hits bottom of the screen
+    for (int i = 0; i < 24; i++) {
+        m3.on_frame(dt);
     }
 
-    CHECK(model.get_doodler().doodler_dead());
+    CHECK(m3.get_doodler().get_position().y == 600);
+    CHECK(m3.get_doodler().doodler_dead());
 }
+
+// // checks to ensure the block sprites are moving down as the game progresses
+TEST_CASE("check blocks moves down")
+{
+    // initialize and clear the existing blocks
+    // initialize with doodler at y = 300 and clear the existing blocks
+    Model m2({100,500});
+    m2.clear_actual_blocks();
+    m2.clear_fragile_blocks();
+
+    // add a new block at desired pos
+    Rectangle test_block1(100, 555, 60, 10);
+    m2.set_new_actual(test_block1);
+
+    // add two blocks that the doodle won't interact with, but will shift down
+    Rectangle test_block2(100, 430, 60, 10);
+    m2.set_new_actual(test_block2);
+
+    Rectangle test_block3(100, 250, 60, 10);
+    m2.set_new_actual(test_block3);
+
+    CHECK(m2.get_actual_blocks().size() == 3);
+    CHECK(m2.get_doodler().get_position().y == 500);
+
+    int dt = 1;
+    m2.launch_doodler();
+
+    // calls 17 frames so the doodler hits the bottom block, check this
+    for (int i = 0; i < 17; i++) {m2.on_frame(dt);}
+    CHECK(m2.get_doodler().get_y_botttom() >= m2.get_actual_blocks()[0].y);
+
+    // call 45 frames so the doodler is moving upwards until negated, check
+    for (int i = 0; i < 45; i++) {m2.on_frame(dt);}
+    CHECK(m2.get_doodler().get_dy() > 0);
+
+    // call more frames so the doodler moves down, hits block 2, check
+    for (int i = 0; i < 18; i++) {
+        m2.on_frame(dt);;
+        CHECK(m2.get_doodler().get_dy() > 0);
+    }
+    // call on frame so doodler hits block 2
+    m2.on_frame(dt);
+
+    // call more frames so doodler jumps up, this time screen moves up too
+    for (int i = 0; i < 20; i++) {
+        m2.on_frame(dt);
+        // manually calculate how far the doodler moved
+    }
+    // check the block will move off-screen with the next on frame
+    CHECK(m2.get_actual_blocks()[0].y >= 600 - 10 +
+                                    3*m2.get_doodler().get_dy());
+
+    // call another frame so the bottom of block 1 goes past screen bottom
+    m2.on_frame(dt);
+
+    // check the first bottom block is re-rendered at top bc it went off-screen
+    CHECK(m2.get_actual_blocks()[0].y == -15);
+
+    // check the two other blocks is re-rendered at a lower position
+    CHECK(m2.get_actual_blocks()[1].y == 458);
+    CHECK(m2.get_actual_blocks()[2].y == 278);
+    // CHECK(m2.get_actual_blocks()[1].y == 430 - block_y_movement);
+    // CHECK(m2.get_actual_blocks()[2].y == 250 - block_y_movement);
+
+}
+
 
 TEST_CASE("check fragile block breaks")
 {
-    // initialize and clear the existing blocks
-    Model model;
-    Test_access access(model);
-    access.clear_blocks(model.get_actual_blocks());
-    access.clear_blocks(model.get_fragile_blocks());
-    double dt = 1;
+    // initialize with doodler at y = 300 and clear the existing blocks
+    Model m4({100,300});
+    m4.clear_actual_blocks();
+    m4.clear_fragile_blocks();
 
-    // set fragile blocks below the doodler
-    access.set_fragile_block({100, 400});
-    access.set_fragile_block({200, 400});
+    // add a new fragile at desired pos
+    Rectangle test_block1(100, 355, 60, 10);
+    m4.set_new_fragile(test_block1);
 
-    // set the doodler above fragile block 1 (the one we're testing with)
-    access.set_doodler({100, 300});
+    // add another fragile at diff location (check if right one re-rendered)
+    Rectangle test_block2(200, 355, 60, 10);
+    m4.set_new_fragile(test_block2);
 
-    // launch the doodler to start the game
-    model.launch_doodler();
+    CHECK(m4.get_fragile_blocks().size() == 2);
+    int dt = 1;
+    m4.launch_doodler();
 
-    // calls 10 frames so the doodler hits fragile block 1
-    for (int i = 0; i < 10; i++) {
-        model.on_frame(dt);
+    // calls 16 frames so the doodler reaches fragile block 1
+    for (int i = 0; i < 16; i++) {
+        m4.on_frame(dt);
     }
+
+    // call another frame so the doodler hits fragile 1
+    // check the position of impact
+    m4.on_frame(dt);
+    CHECK(m4.get_doodler().get_y_botttom() >= m4.get_fragile_blocks()[0].y);
+
+    // call another frame so the re-render occurs
+    m4.on_frame(dt);
 
     // check the first hit fragile block is re-rendered
     // check the other fragile block remains the same
-    CHECK(model.get_fragile_blocks()[0].y == -15);
-    CHECK(model.get_fragile_blocks()[1].x == 200);
-    CHECK(model.get_fragile_blocks()[1].y == 400);
+    CHECK(m4.get_fragile_blocks()[0].y == -15);
+    CHECK(m4.get_fragile_blocks()[1].x == 200);
 }
-
+//
 TEST_CASE("check score count")
 {
-    // initialize and clear the existing blocks
-    Model model;
-    Test_access access(model);
-    access.clear_blocks(model.get_actual_blocks());
-    access.clear_blocks(model.get_fragile_blocks());
-    double dt = 1;
+    // initialize with doodler at y = 300 and clear the existing blocks
+    Model m5({100,300});
+    m5.clear_actual_blocks();
+    m5.clear_fragile_blocks();
 
-    // create a manual counter for testing
+    // start with one new block at desired pos
+    Rectangle test_block1(100, 355, 60, 10);
+    m5.set_new_actual(test_block1);
+
+    // create testing score counter
     int score_counter = 0;
 
-    // set three blocks
-    access.set_actual_block({100, 500});
-    access.set_actual_block({100, 420});
-    access.set_actual_block({100, 340});
+    int dt = 1;
+    m5.launch_doodler();
 
-    // no new blocks initialized bc doodler has to free fall
-    // set doodler at a desired pos
-    access.set_doodler({100, 430});
-
-    // launch the doodler to start the game
-    model.launch_doodler();
-
-    // calls 10 frames so the doodler hits the first block
-    for (int i = 0; i < 10; i++) {
-        model.on_frame(dt);
-    }
-    // check the score increases correctly
-    CHECK(model.get_score() == score_counter - model.get_doodler().get_dy());
-
-    // calls 10 frames so the doodler hits the second block
-    for (int i = 0; i < 10; i++) {
-        model.on_frame(dt);
-    }
-    // update the score counter manually, check with real score
-    score_counter -= model.get_doodler().get_dy();
-    CHECK(model.get_score() == score_counter);
-
-    // calls 10 frames so the doodler hits the second block
-    for (int i = 0; i < 10; i++) {
-        model.on_frame(dt);
+    // calls 21 frames so the doodler hits the first block
+    for (int i = 0; i < 21; i++) {
+        m5.on_frame(dt);
     }
 
-    // update the score counter manually, check with real score
-    score_counter -= model.get_doodler().get_dy();
-    CHECK(model.get_score() == score_counter);
-
-}
-
-Test_access::Test_access(Model& model)
-        : model(model)
-{ }
-
-void
-Test_access::set_actual_block(Position p){
-    Rectangle test_block(p.x, p.y, 60, 10);
-    model.get_actual_blocks().push_back(test_block);
-}
-
-void
-Test_access::set_fragile_block(Position p){
-    Rectangle test_block(p.x, p.y, 60, 10);
-    model.get_fragile_blocks().push_back(test_block);
-}
-
-void
-Test_access::set_doodler(Position p){
-    model.get_doodler().set_doodler_position(p);
-}
-
-void
-Test_access::clear_blocks(ListofRect blocks){
-    blocks.clear();
+    // call 37 frames so doodle velocity negated, checks score
+    for (int i = 0; i < 37; i++) {
+        m5.on_frame(dt);
+        // manually change the testing score (updates with doodler movement up)
+        score_counter -= m5.get_doodler().get_dy();
+        CHECK(m5.get_score() == score_counter);
+    }
 }

@@ -12,7 +12,7 @@ class Model
 {
 public:
     //constructor
-    Model();
+    Model(Position pos);
 
     //updates state of game for one frame and position of doodle
     //calls move_blocks_down, replace_blocks, if_hit_block
@@ -48,6 +48,13 @@ public:
     Doodler get_doodler() {return this->doodler;}
 
     int get_score() {return this->score_;}
+
+
+    // TESTING HELPERS
+    void clear_actual_blocks(){actual_blocks_.clear();}
+    void clear_fragile_blocks(){fragile_blocks_.clear();}
+    void set_new_actual(Rectangle block){actual_blocks_.push_back(block);}
+    void set_new_fragile(Rectangle block){fragile_blocks_.push_back(block);}
 
 private:
 

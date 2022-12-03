@@ -15,7 +15,7 @@ public:
     using ListofRect = std::vector<Rectangle>;
 
     //Constructor
-    Doodler();
+    Doodler(Position pos);
 
     // moves the doodler downwards continuously
     void on_frame(double dt);
@@ -65,16 +65,11 @@ public:
 
     float get_dy() {return dy;}
 
-
-    // TESTER HELPERS
-    void set_doodler_position(Position p){
-        position_.x = p.x;
-        position_.y = p.y;
-    }
+    Position get_position(){return position_;}
 
 private:
     //doodler's center
-    Position position_ {135,505};
+    Position position_;
 
     Position doodler_top_left_ {0,0};
 

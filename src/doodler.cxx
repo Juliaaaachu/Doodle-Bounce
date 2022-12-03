@@ -2,7 +2,8 @@
 #include "model.hxx"
 
 // constructing the doodler
-Doodler::Doodler()
+Doodler::Doodler(Position pos)
+        : position_(pos)
 {}
 
 // see if doodler hits screen bottom
