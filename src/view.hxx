@@ -31,7 +31,8 @@ private:
     Model& model_;
 
     // creating var. for score sprites/font
-    ge211::Font sans30_{"font.ttf",25};
+    ge211::Font score25_{"font.ttf",25};
+    ge211::Font score50_{"font.ttf",50};
     ge211::Text_sprite score_sprite_;
 
     // importing in the sprites for the doodler

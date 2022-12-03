@@ -24,11 +24,12 @@ Model::Model(Position pos)
 
 // function for initializing new blocks
 Rectangle
-Model::add_new_block(int multipler, int gap){
+Model::add_new_block(int multipler, int gap)
+{
     // randomize a position within screen dimensions
     Position block_pos = Position(rand() % 140 + 50,
                                   500 - multipler * gap);
-    return Rectangle(block_pos.x, block_pos.y,60, 10);
+    return Rectangle(block_pos.x, block_pos.y, 60, 10);
 }
 
 // replacing the blocks when the screen re-renders

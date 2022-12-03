@@ -1,20 +1,7 @@
 #include "model.hxx"
 #include <catch.hxx>
 
-// struct Test_access
-// {
-//     Model& model;
-//
-//     // Constructs a `Test_access` with a reference to the Model under test.
-//     explicit Test_access(Model&);
-//     void set_actual_block (Position p);
-//     void set_fragile_block (Position p);
-//     void set_doodler (Position p);
-//     void clear_blocks(ListofRect blocks);
-// };
-
-//
-// test case checks if the doodler correctly keeps moving down until it bounces
+// checks if the doodler correctly keeps moving down until it bounces
 TEST_CASE("check bounce")
 {
     // initialize with doodler at y = 300 and clear the existing blocks
@@ -83,7 +70,7 @@ TEST_CASE("check doodler dies")
     CHECK(m3.get_doodler().doodler_dead());
 }
 
-// // checks to ensure the block sprites are moving down as the game progresses
+// // checks to ensure block sprites are moving down as the game progresses
 TEST_CASE("check blocks moves down")
 {
     // initialize and clear the existing blocks
@@ -106,6 +93,7 @@ TEST_CASE("check blocks moves down")
     CHECK(m2.get_actual_blocks().size() == 3);
     CHECK(m2.get_doodler().get_position().y == 500);
 
+    int change_y = 0;
     int dt = 1;
     m2.launch_doodler();
 
@@ -128,6 +116,9 @@ TEST_CASE("check blocks moves down")
     // call more frames so doodler jumps up, this time screen moves up too
     for (int i = 0; i < 20; i++) {
         m2.on_frame(dt);
+        if (m2.get_doodler().get_position().y <= 300){
+            change_y -= m2.get_doodler().get_dy();
+        }
         // manually calculate how far the doodler moved
     }
     // check the block will move off-screen with the next on frame
@@ -136,19 +127,18 @@ TEST_CASE("check blocks moves down")
 
     // call another frame so the bottom of block 1 goes past screen bottom
     m2.on_frame(dt);
+    change_y -= m2.get_doodler().get_dy();
 
     // check the first bottom block is re-rendered at top bc it went off-screen
     CHECK(m2.get_actual_blocks()[0].y == -15);
 
-    // check the two other blocks is re-rendered at a lower position
-    CHECK(m2.get_actual_blocks()[1].y == 458);
-    CHECK(m2.get_actual_blocks()[2].y == 278);
-    // CHECK(m2.get_actual_blocks()[1].y == 430 - block_y_movement);
-    // CHECK(m2.get_actual_blocks()[2].y == 250 - block_y_movement);
+    // check the two other blocks is re-rendered at lower position by dy change
+    CHECK(m2.get_actual_blocks()[1].y == 430 + change_y);
+    CHECK(m2.get_actual_blocks()[2].y == 250 + change_y);
 
 }
 
-
+// checks that the fragile block is replaced when jumped on
 TEST_CASE("check fragile block breaks")
 {
     // initialize with doodler at y = 300 and clear the existing blocks
@@ -187,6 +177,8 @@ TEST_CASE("check fragile block breaks")
     CHECK(m4.get_fragile_blocks()[1].x == 200);
 }
 //
+
+// checks the score updates with the doodle's dy changes
 TEST_CASE("check score count")
 {
     // initialize with doodler at y = 300 and clear the existing blocks

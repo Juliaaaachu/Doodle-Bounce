@@ -6,26 +6,31 @@
 // initializing the view (sprites already declared in hxx)
 View::View(Model& model)
         : model_(model),
-        score_sprite_(std::to_string(model_.get_score()), sans30_)
+        score_sprite_(std::to_string(model_.get_score()), score25_)
 {}
 
 // drawing the scene for each frame update
 void
 View::draw(Sprite_set& set)
 {
-    //prints out score on the top left screen, keep track of updated value
-    ge211::Text_sprite::Builder score_builder(sans30_);
-    score_builder.color(ge211::Color::medium_red()) << model_.get_score();
-    score_sprite_.reconfigure(score_builder);
-    set.add_sprite(score_sprite_, {20, 24},3);
-
     // if the doodler is dead, show game over
     if (model_.get_doodler().doodler_dead()){
         set.add_sprite(game_over_, {40, 250},
                        5, game_over_scale);
+
+        ge211::Text_sprite::Builder score_builder(score50_);
+        score_builder.color(ge211::Color::medium_red()) << model_.get_score();
+        score_sprite_.reconfigure(score_builder);
+        set.add_sprite(score_sprite_, {115, 335},3);
     }
     // otherwise draw the screen as usual
     else{
+        //prints out score on the top left screen, keep track of updated value
+        ge211::Text_sprite::Builder score_builder(score25_);
+        score_builder.color(ge211::Color::medium_red()) << model_.get_score();
+        score_sprite_.reconfigure(score_builder);
+        set.add_sprite(score_sprite_, {20, 24},3);
+
         draw_doodler(set);
         draw_blocks(set);
     }
