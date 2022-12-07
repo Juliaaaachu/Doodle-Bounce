@@ -2,9 +2,10 @@
 by Julia Chu &amp; Janna Lee 
 
 This a Doodle-Jump clone in C++ and ge211 library. 
+<br>
+<img src="presentation.png" width=200 align="center">
 
 <br>
-
 
 The game achieves the following functionality: 
 
